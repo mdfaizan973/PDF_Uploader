@@ -38,9 +38,14 @@ const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-
+const corsConfig = {
+  origin: "*",
+  credential: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+};
 // Middleware
-app.use(cors());
+app.options("", cors(corsConfig));
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use("/uploads", express.static(uploadDir)); // Serve uploaded files
 
