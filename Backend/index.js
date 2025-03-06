@@ -38,14 +38,14 @@ const uploadDir = path.join(__dirname, "uploads");
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
-const corsConfig = {
-  origin: "*",
-  credential: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
-};
+// const corsConfig = {
+//   origin: "*",
+//   credential: true,
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+// };
 // Middleware
-app.options("", cors(corsConfig));
-app.use(cors(corsConfig));
+// app.options("", cors(corsConfig));
+app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(uploadDir)); // Serve uploaded files
 
@@ -68,7 +68,7 @@ app.get("/", (req, res) => {
 });
 
 // Routes
-app.use("/api/files", fileRoutes);
+app.use("/api/files", verifyApiKey, fileRoutes);
 app.use("/api/users", verifyApiKey, userRoutes);
 app.use("/api/feedback", verifyApiKey, routerFeedback);
 
