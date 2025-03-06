@@ -250,7 +250,10 @@ const Pricing = () => {
                     </div>
                     <p className="text-sm font-semibold text-blue-600 mb-4">
                       Your payment of
-                      <span className="text-red-500"> ₹{selectedAmount}</span>{" "}
+                      <span className="text-red-500">
+                        {" "}
+                        ₹{selectedAmount}
+                      </span>{" "}
                       has been done!
                     </p>
 
@@ -296,7 +299,6 @@ const Pricing = () => {
           </div>
         )}
       </div>
-      <Footer />
     </>
   );
 };
