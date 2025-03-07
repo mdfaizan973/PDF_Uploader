@@ -49,9 +49,9 @@ _👉
 ## Steps to pay
 
 <div style="display: flex; gap: 10px; justify-content: center;">
-      <img src="https://github.com/user-attachments/assets/41e61d46-29ff-4953-86c9-54b4f113d8d0" alt="Screenshot 3" width="300">
-      <img src="https://github.com/user-attachments/assets/879c59cb-3019-407b-a1e8-e6b05c9eac38" alt="Screenshot 2" width="300">
-      <img src="https://github.com/user-attachments/assets/c2c5a6f7-3612-4843-99f3-9e94942ab6e7" alt="Screenshot 1" width="300">
+      <img src="https://github.com/user-attachments/assets/41e61d46-29ff-4953-86c9-54b4f113d8d0" alt="Screenshot 3" width="297">
+      <img src="https://github.com/user-attachments/assets/879c59cb-3019-407b-a1e8-e6b05c9eac38" alt="Screenshot 2" width="280">
+      <img src="https://github.com/user-attachments/assets/c2c5a6f7-3612-4843-99f3-9e94942ab6e7" alt="Screenshot 1" width="305">
 </div>
 
 ---
