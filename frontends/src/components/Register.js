@@ -21,7 +21,7 @@ const Register = () => {
       copypass: password,
       role_id: 5,
       gender,
-      limits: 25,
+      limits: 20,
     };
     try {
       await axios.post(`${baseUrl}/users/register`, userData, {
