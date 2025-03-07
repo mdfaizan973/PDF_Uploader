@@ -45,6 +45,7 @@ if (!fs.existsSync(uploadDir)) {
 // };
 // Middleware
 // app.options("", cors(corsConfig));
+
 app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static(uploadDir)); // Serve uploaded files
