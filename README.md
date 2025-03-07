@@ -1,4 +1,8 @@
-# DropDock 📂🚀
+
+# 🚀 DropDock - Work in Progress 🚧  
+
+### 🔨 This project is actively being developed! Stay tuned for updates.  
+
 
 Welcome to **DropDock** – a **secure and seamless document management platform** where users can **upload PDFs, subscribe for premium access, and leave reviews**. Built with a **modern tech stack**, DropDock ensures a smooth and intuitive experience. 💡
 
