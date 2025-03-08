@@ -1,4 +1,4 @@
-export const baseUrl = "https://docsdrop.vercel.app/api"; // http://localhost:5000/api
+export const baseUrl = "http://localhost:5000/api"; // http://localhost:5000/api
 // export const baseUrl = "https://docsdrop.vercel.app/api";
 
 // api key
