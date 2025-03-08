@@ -17,7 +17,7 @@ import Navbar from "./Navbar";
 import { FaFilePdf } from "react-icons/fa";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { FeedbackForm } from "./UserFeedbacks";
-import { API_KEY, baseUrl } from "../configs/config";
+import { API_KEY, baseUrl, downloadUrl } from "../configs/config";
 const FileUpload = () => {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
@@ -354,7 +354,7 @@ const FileUpload = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {uploadedFiles.map((file) => (
+                      {uploadedFiles?.map((file) => (
                         <tr key={file._id} className="hover:bg-gray-50">
                           <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
@@ -363,7 +363,7 @@ const FileUpload = () => {
                               </div>
                               <div className="ml-4">
                                 <a
-                                  href={`https://docsdrop.vercel.app${file.fileUrl}`}
+                                  href={`${downloadUrl}${file.fileUrl}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="text-sm font-medium text-indigo-600 hover:text-indigo-900 hover:underline"
