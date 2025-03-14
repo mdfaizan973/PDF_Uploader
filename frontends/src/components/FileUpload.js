@@ -24,11 +24,12 @@ const FileUpload = () => {
   const [description, setDescription] = useState("");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [loadingFiles, setLoadingFiles] = useState(false);
   const [fileName, setFileName] = useState("No file selected");
   const token = localStorage.getItem("userDetails");
   const dataRef = useRef([]);
-
+  const [limitExceeds, setLimitExceeds] = useState(false);
   useEffect(() => {
     fetchFiles();
   }, []);
@@ -63,12 +64,12 @@ const FileUpload = () => {
       });
 
       //   setUploadedFiles([...uploadedFiles, res.data.file])
-      fetchFiles();
       alert("File uploaded successfully");
       setTitle("");
       setDescription("");
       setFile(null);
       setFileName("No file selected");
+      fetchFiles();
     } catch (error) {
       alert("File upload failed");
     } finally {
@@ -87,6 +88,9 @@ const FileUpload = () => {
       );
       setUploadedFiles(res.data);
       dataRef.current = res.data;
+      if (getUserInfo("limits") == res?.data?.length) {
+        setLimitExceeds(true);
+      }
     } catch (error) {
       alert("Failed to load files");
     } finally {
@@ -119,6 +123,7 @@ const FileUpload = () => {
   };
 
   const handleDelete = async (id) => {
+    setLoading(true);
     try {
       const response = await axios.delete(`${baseUrl}/files/${id}`, {
         headers: {
@@ -129,6 +134,8 @@ const FileUpload = () => {
       fetchFiles();
     } catch (error) {
       alert("Failed to delete file");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -248,9 +255,9 @@ const FileUpload = () => {
                 <div className="flex justify-end">
                   <button
                     onClick={handleUpload}
-                    disabled={loading}
+                    disabled={loading || limitExceeds}
                     className={`flex items-center px-4 py-2 rounded-md text-white font-medium ${
-                      loading
+                      loading || limitExceeds
                         ? "bg-indigo-400"
                         : "bg-indigo-600 hover:bg-indigo-700"
                     } transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
@@ -296,7 +303,7 @@ const FileUpload = () => {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                 <h2 className="text-2xl font-bold text-gray-800 flex items-center">
                   <FaFilePdf className="text-black-500 text-3xl mr-2" />
-                  My Documents
+                  My Documents ({dataRef?.current?.length})
                 </h2>
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto mt-4 sm:mt-0">
@@ -323,8 +330,9 @@ const FileUpload = () => {
                   </button>
                 </div>
               </div>
-
-              {uploadedFiles.length === 0 ? (
+              {loadingFiles ? (
+                <Spinner />
+              ) : uploadedFiles.length === 0 ? (
                 <div className="text-center py-12 px-4">
                   <FaFilePdf className="mx-auto h-12 w-12 text-gray-900" />
                   <h3 className="mt-2 text-lg font-medium text-gray-900">
@@ -407,6 +415,90 @@ const FileUpload = () => {
                   </table>
                 </div>
               )}
+
+              {/* {uploadedFiles.length === 0 ? (
+                <div className="text-center py-12 px-4">
+                  <FaFilePdf className="mx-auto h-12 w-12 text-gray-900" />
+                  <h3 className="mt-2 text-lg font-medium text-gray-900">
+                    No documents
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-500">
+                    You haven't uploaded any documents yet.
+                  </p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Document
+                        </th>
+                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Description
+                        </th>
+                        <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Create Date
+                        </th>
+                        <th className="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {uploadedFiles?.map((file) => (
+                        <tr key={file._id} className="hover:bg-gray-50">
+                          <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center">
+                              <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-red-100 rounded-md">
+                                <FaFilePdf className="h-5 w-5 text-red-500" />
+                              </div>
+                              <div className="ml-4">
+                                <a
+                                  href={`${downloadUrl}${file.fileUrl}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-sm font-medium text-indigo-600 hover:text-indigo-900 hover:underline"
+                                >
+                                  {file.title}.pdf
+                                </a>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 py-4">
+                            <div className="text-sm text-gray-500 max-w-xs truncate">
+                              {file.description || "No description"}
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 py-4">
+                            <div className="text-sm text-gray-500 max-w-xs truncate">
+                              {file.createdAt
+                                ? new Date(file.createdAt).toLocaleString()
+                                : ""}
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button
+                              onClick={() =>
+                                handleDownload(file.filename, file.title)
+                              }
+                              className="inline-flex items-center p-2 border border-transparent text-xs font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-2"
+                            >
+                              <FiDownload />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(file._id)}
+                              className="inline-flex items-center p-2 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                            >
+                              <FiTrash2 />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )} */}
             </div>
           </div>
         </div>
@@ -416,3 +508,15 @@ const FileUpload = () => {
 };
 
 export default FileUpload;
+const Spinner = () => {
+  return (
+    <div className="flex justify-center items-center h-[300px] bg-gray-100">
+      <div className="relative flex justify-center items-center">
+        <div className="absolute w-16 h-16 bg-red-500 opacity-75 rounded-full animate-ping"></div>
+        <div className="relative flex justify-center items-center w-12 h-12 bg-red-500 rounded-full">
+          <FaFilePdf size={18} className="fill-white" />
+        </div>
+      </div>
+    </div>
+  );
+};
