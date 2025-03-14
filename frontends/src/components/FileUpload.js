@@ -175,8 +175,14 @@ const FileUpload = () => {
             </div>
 
             {/* Right Section - Button */}
-            <div>
-              <FeedbackForm />
+            <div className="">
+              <div className="flex justify-end">
+                <FeedbackForm />
+              </div>
+              <p className="mt-2 text-md text-red-600 max-w-md">
+                📌 NOTE: It may take a moment to respond. Please hold on! ☺️
+                Thank you for your patience!s
+              </p>
             </div>
           </div>
         </div>
