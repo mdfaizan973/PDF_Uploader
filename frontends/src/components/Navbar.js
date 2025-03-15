@@ -76,6 +76,7 @@ const Navbar = () => {
               Login
             </NavItem>
           )}
+
           {getUserInfo("role_id") === 1 && (
             <NavItem to="/admin-panel" icon={FiUser}>
               Admin
