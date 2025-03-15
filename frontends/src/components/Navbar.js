@@ -76,9 +76,11 @@ const Navbar = () => {
               Login
             </NavItem>
           )}
-          <NavItem to="/admin-panel" icon={FiUser}>
-            Admin
-          </NavItem>
+          {getUserInfo("role_id") === 1 && (
+            <NavItem to="/admin-panel" icon={FiUser}>
+              Admin
+            </NavItem>
+          )}
           <NavItem to="/upload" icon={FiUpload}>
             Upload
           </NavItem>
